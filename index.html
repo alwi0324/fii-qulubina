@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fii Qulubina</title>
+
+    <script>
+      (function () {
+        const temaTersimpan = localStorage.getItem("theme");
+        if (
+          temaTersimpan === "dark" ||
+          (!temaTersimpan &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      })();
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/typography@0.5.10/src/index.min.js"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body
+    class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-200 antialiased min-h-screen pb-32 sm:pb-24"
+  >
+    <header
+      class="fixed top-0 left-0 right-0 z-50 h-16 border-b border-slate-200 bg-white/80 dark:border-slate-700/60 dark:bg-slate-900/80 backdrop-blur shadow-sm dark:shadow-slate-950/50 transition-colors"
+    >
+      <div class="w-full flex h-full items-center justify-between px-4 sm:px-6">
+        <div class="flex items-center gap-4">
+          <button
+            id="toggle-sidebar-btn"
+            class="inline-flex items-center justify-center rounded-md p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          >
+            <i
+              id="hamburger-icon"
+              class="fa-solid fa-bars text-xl transition-transform duration-200"
+            ></i>
+          </button>
+
+          <div
+            class="flex items-center gap-2 font-bold text-xl tracking-wider text-amber-600 dark:text-amber-400"
+          >
+            <i class="fa-solid fa-book-open"></i>
+            <span>Fii Qulubina</span>
+          </div>
+        </div>
+
+        <button
+          id="dark-mode-toggle"
+          class="rounded-full p-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
+        >
+          <i
+            id="dark-icon"
+            class="fa-solid fa-moon text-xl text-yellow-400 hidden dark:block"
+          ></i>
+          <i
+            id="light-icon"
+            class="fa-solid fa-sun text-xl text-yellow-400 block dark:hidden"
+          ></i>
+        </button>
+      </div>
+    </header>
+
+    <div
+      class="w-full flex relative pt-16 min-h-screen items-stretch overflow-x-hidden bg-slate-50 dark:bg-slate-950"
+    >
+      <aside
+        id="sidebar"
+        class="fixed inset-y-0 left-0 z-40 w-64 border-r border-slate-200 bg-white pt-4 overflow-y-auto overflow-x-hidden flex-shrink-0 flex flex-col justify-between transition-all duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900"
+      >
+        <div class="w-64 flex-shrink-0">
+          <div
+            class="px-4 py-2 font-semibold text-xs text-slate-400 uppercase tracking-wider"
+          >
+            Menu
+          </div>
+          <nav class="space-y-1 px-2">
+            <a
+              href="#"
+              class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              <i class="fa-solid fa-house w-5 text-center"></i> Beranda
+            </a>
+            <a
+              href="#/penulis"
+              class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              <i class="fa-solid fa-user w-5 text-center"></i> Ustadz
+            </a>
+            <a
+              href="#/kategori"
+              class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              <i class="fa-solid fa-tags w-5 text-center"></i> Kitab
+            </a>
+            <a
+              href="#/semua-artikel"
+              class="flex items-center gap-3 rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400 px-3 py-2 text-sm font-medium"
+            >
+              <i class="fa-solid fa-newspaper w-5 text-center"></i> Rangkuman
+            </a>
+          </nav>
+        </div>
+
+        <div class="h-24 w-full flex-shrink-0"></div>
+      </aside>
+
+      <div
+        id="sidebar-overlay"
+        class="fixed inset-0 z-30 bg-slate-900/40 hidden md:hidden"
+      ></div>
+
+      <div
+        id="main-wrapper"
+        class="flex-1 transition-all duration-300 ease-in-out w-full pl-64 xl:flex xl:justify-center"
+      >
+        <main
+          id="main-content"
+          class="w-full max-w-4xl px-6 pt-8 pb-16 sm:px-12 lg:px-16 ml-0 md:ml-4 lg:ml-8 xl:ml-0 xl:mx-0 transition-all duration-300"
+        >
+          <div
+            id="meta-kategori-penulis"
+            class="mb-4 text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400"
+          ></div>
+          <h1
+            id="judul-artikel"
+            class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-slate-900 dark:text-white leading-tight"
+          ></h1>
+          <div
+            id="nav-kategori-top"
+            class="mb-6 flex items-center gap-4 text-sm font-medium text-slate-600 dark:text-slate-400"
+          ></div>
+          <div
+            class="mb-8 rounded-2xl overflow-hidden shadow-md shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-800"
+          >
+            <img
+              id="gambar-artikel"
+              src=""
+              alt="Gambar Ilustrasi"
+              class="w-full h-auto aspect-video object-cover"
+              loading="lazy"
+            />
+          </div>
+
+          <div
+            id="konten-artikel"
+            class="prose prose-slate dark:prose-invert max-w-none font-['Caveat'] text-xl"
+          >
+            <ol
+              id="konten-poin"
+              class="space-y-6 list-none [counter-reset:item]"
+            ></ol>
+          </div>
+          <div
+            id="nav-kategori-bottom"
+            class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-sm font-medium text-slate-600 dark:text-slate-400"
+          ></div>
+        </main>
+      </div>
+    </div>
+
+    <div class="w-full flex relative pt-5"></div>
+
+    <div
+      id="music-player"
+      class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 backdrop-blur-md px-4 py-3 shadow-lg transition-all duration-300 transform translate-y-0"
+    >
+      <div
+        class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3"
+      >
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+          <div
+            class="bg-amber-600 text-white rounded-lg h-10 w-10 flex items-center justify-center shadow-inner flex-shrink-0"
+          >
+            <i class="fa-solid fa-music animate-pulse"></i>
+          </div>
+          <div class="text-left min-w-0">
+            <p
+              class="text-sm font-semibold text-slate-800 dark:text-white truncate max-w-[250px]"
+            >
+              Lofi Coding Session v1
+            </p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 truncate">
+              Indra Prod.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-6">
+          <button
+            onclick="rewindAudio()"
+            class="text-slate-700 hover:text-amber-600 dark:text-slate-400 dark:hover:text-amber-400 transition-colors flex items-center gap-1 focus:outline-none"
+          >
+            <i class="fa-solid fa-backward-step text-base"></i>
+            <span class="text-xs font-mono">10s</span>
+          </button>
+
+          <button
+            onclick="togglePlay()"
+            class="bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600 border border-amber-700/30 text-white h-11 w-11 rounded-full flex items-center justify-center shadow transition-all transform active:scale-95 focus:outline-none"
+          >
+            <i id="play-icon" class="fa-solid fa-play text-lg pl-1"></i>
+          </button>
+
+          <button
+            onclick="fastForwardAudio()"
+            class="text-slate-700 hover:text-amber-600 dark:text-slate-400 dark:hover:text-amber-400 transition-colors flex items-center gap-1 focus:outline-none"
+          >
+            <span class="text-xs font-mono">10s</span>
+            <i class="fa-solid fa-forward-step text-base"></i>
+          </button>
+        </div>
+
+        <div
+          class="w-full sm:w-1/3 flex items-center gap-2 text-xs font-mono text-slate-600 dark:text-slate-400"
+        >
+          <span id="current-time">0:00</span>
+
+          <input
+            type="range"
+            id="audio-slider"
+            min="0"
+            max="100"
+            value="0"
+            class="flex-1 h-1.5 rounded-full appearance-none cursor-pointer focus:outline-none transition-all duration-75 bg-slate-200 dark:bg-slate-700"
+            style="
+              background-image: linear-gradient(
+                to right,
+                #4f46e5 0%,
+                #4f46e5 0%,
+                #e2e8f0 0%,
+                #e2e8f0 100%
+              );
+            "
+          />
+
+          <span id="total-time">0:00</span>
+        </div>
+      </div>
+    </div>
+
+    <audio id="audio-engine" src="" preload="metadata"></audio>
+
+    <script src="ml.js"></script>
+  </body>
+</html>

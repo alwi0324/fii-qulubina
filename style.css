@@ -1,0 +1,99 @@
+/* Mengunci sidebar agar scrollbar-nya mandiri (Independent Scroll) */
+#sidebar {
+  height: calc(100vh - 4rem);
+  top: 4rem; /* Memastikan posisi atas dimulai tepat di bawah garis navbar */
+  box-sizing: border-box;
+}
+
+/* Efek mikro rotasi halus saat ikon berubah dari garis tiga menjadi silang */
+.rotate-icon {
+  transform: rotate(90deg);
+}
+
+#sidebar.w-0 {
+  border-right-width: 0px !important;
+  opacity: 0;
+  pointer-events: none; /* Mencegah menu diklik saat tidak terlihat */
+}
+
+/* Sembunyikan lingkaran (thumb) di awal untuk semua jenis browser */
+#audio-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #4f46e5; /* Default warna indigo-600 */
+  opacity: 0; /* KUNCI: Hilangkan saat normal */
+  transition:
+    opacity 0.15s ease-in-out,
+    transform 0.1s ease;
+}
+
+#audio-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: none;
+  border-radius: 50%;
+  background: #4f46e5;
+  opacity: 0; /* KUNCI: Hilangkan saat normal */
+  transition:
+    opacity 0.15s ease-in-out,
+    transform 0.1s ease;
+}
+
+/* Sinkronisasi warna thumb saat website berada di mode gelap (Darkmode) */
+.dark #audio-slider::-webkit-slider-thumb {
+  background: #6366f1; /* Indigo-500 */
+}
+.dark #audio-slider::-moz-range-thumb {
+  background: #6366f1;
+}
+
+/* Tampilkan lingkaran HANYA ketika di-hover (kursor di atasnya) atau di-tap/digeser */
+#audio-slider:hover::-webkit-slider-thumb,
+#audio-slider:active::-webkit-slider-thumb {
+  opacity: 1;
+}
+
+#audio-slider:hover::-moz-range-thumb,
+#audio-slider:active::-moz-range-thumb {
+  opacity: 1;
+}
+
+/* Efek visual tambahan: Sedikit perbesar lingkaran saat ditekan aktif */
+#audio-slider:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+#audio-slider:active::-moz-range-thumb {
+  transform: scale(1.2);
+}
+
+/* Menghilangkan backtick otomatis dari bawaan tailwind prose */
+.prose code::before {
+  content: "" !important;
+}
+.prose code::after {
+  content: "" !important;
+}
+
+/* Membuat tampilan inline code (seperti numeric, character) jadi lebih cantik seperti badge */
+.prose :not(pre) > code {
+  background-color: #f1f5f9; /* slate-100 */
+  color: #0f172a; /* slate-900 */
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.375rem; /* md */
+  font-weight: 500;
+}
+.dark .prose :not(pre) > code {
+  background-color: #1e293b; /* slate-800 */
+  color: #f8fafc; /* slate-50 */
+}
+.prose img {
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0.75rem; /* rounded-xl */
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.05),
+    0 2px 4px -2px rgb(0 0 0 / 0.05); /* shadow-md lembut */
+}
