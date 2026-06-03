@@ -30,7 +30,7 @@ function routerArtikel() {
     // Sinkronkan text box pencarian di sidebar agar sesuai dengan URL saat ini
     const inputSearch = document.getElementById("search-input");
     if (inputSearch) inputSearch.value = decodeURIComponent(rawQuery);
-    
+    tutupSidebarMobile();
     jalankanFilterPencarian(kataKunci);
     return; // Keluar dari router agar tidak mengecek regex di bawah
   }
@@ -124,7 +124,7 @@ function renderHalamanTidakDitemukanPencarian(keyword) {
   document.getElementById("judul-artikel").innerText = `Kata kunci "${keyword}" tidak ditemukan.`;
   
   const imgElement = document.getElementById("gambar-artikel");
-  if (imgElement) imgElement.src = "https://images.unsplash.com/photo-1594322436404-5a0526db4d13?w=1200";
+  if (imgElement) imgElement.src = "https://herza.id/wp-content/uploads/2023/11/Error-404-Solusi-Mudah-untuk-Mengatasi-Masalah-Halaman-Tidak-Ditemukan.jpg";
 
   const containerPoin = document.getElementById("konten-poin");
   if (containerPoin) {
@@ -571,11 +571,26 @@ audio.addEventListener("ended", () => {
 
 function eksekusiPencarian(event) {
   event.preventDefault();
+
+  const inputElement = document.getElementById("search-input");
+  if (!inputElement) return;
+  
   const query = document.getElementById("search-input").value.trim();
   
   if (query !== "") {
     // Ubah hash URL menjadi format pencarian query string (Aman untuk karakter spasi/khusus)
     window.location.hash = `#/cari?q=${encodeURIComponent(query)}`;
+    tutupSidebarMobile();
   }
 }
 
+function tutupSidebarMobile() {
+  const sidebar = document.getElementById("sidebar");
+  if (sidebar) {
+    sidebar.classList.add("-translate-x-full");
+    sidebar.classList.remove("translate-x-0");
+  }
+  
+  const overlay = document.getElementById("sidebar-overlay");
+  if (overlay) overlay.classList.add("hidden");
+}
