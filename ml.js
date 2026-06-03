@@ -30,7 +30,7 @@ function routerArtikel() {
     // Sinkronkan text box pencarian di sidebar agar sesuai dengan URL saat ini
     const inputSearch = document.getElementById("search-input");
     if (inputSearch) inputSearch.value = decodeURIComponent(rawQuery);
-    tutupSidebarMobile();
+    
     jalankanFilterPencarian(kataKunci);
     return; // Keluar dari router agar tidak mengecek regex di bawah
   }
@@ -580,17 +580,5 @@ function eksekusiPencarian(event) {
   if (query !== "") {
     // Ubah hash URL menjadi format pencarian query string (Aman untuk karakter spasi/khusus)
     window.location.hash = `#/cari?q=${encodeURIComponent(query)}`;
-    tutupSidebarMobile();
   }
-}
-
-function tutupSidebarMobile() {
-  const sidebar = document.getElementById("sidebar");
-  if (sidebar) {
-    sidebar.classList.add("-translate-x-full");
-    sidebar.classList.remove("translate-x-0");
-  }
-  
-  const overlay = document.getElementById("sidebar-overlay");
-  if (overlay) overlay.classList.add("hidden");
 }
