@@ -94,9 +94,10 @@
             <form id="search-form" class="relative flex items-center">
               <input 
                 type="text" 
-                id="search-input" 
+                id="search-input"
+                autocomplete="off"
                 placeholder="Cari rangkuman..." 
-                class="w-full rounded-lg border border-slate-200 bg-slate-50 py-1.5 pl-3 pr-10 text-xs font-medium focus:border-amber-500 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:focus:border-amber-400"
+                class="w-full rounded-lg border border-slate-200 bg-slate-50 py-1.5 pl-3 pr-10 font-['Caveat'] font-medium focus:border-amber-500 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:focus:border-amber-400"
               />
               <button 
                 type="submit" 
@@ -186,7 +187,7 @@
           >
             <ol
               id="konten-poin"
-              class="space-y-6 list-none [counter-reset:item]"
+              class="space-y-4 list-none [counter-reset:item]"
             ></ol>
           </div>
           <div
