@@ -23,6 +23,18 @@ async function muatDataArtikel() {
 function routerArtikel() {
   const hash = window.location.hash; // Mengambil text seperti '#/rangkuman/ini-judul-pertama'
 
+  if (hash.startsWith("#/cari?q=")) {
+    const rawQuery = hash.replace("#/cari?q=", "");
+    const kataKunci = decodeURIComponent(rawQuery).toLowerCase().trim();
+    
+    // Sinkronkan text box pencarian di sidebar agar sesuai dengan URL saat ini
+    const inputSearch = document.getElementById("search-input");
+    if (inputSearch) inputSearch.value = decodeURIComponent(rawQuery);
+    
+    jalankanFilterPencarian(kataKunci);
+    return; // Keluar dari router agar tidak mengecek regex di bawah
+  }
+  
   // Pola regex untuk mendeteksi router /rangkuman/any-slug
   const match = hash.match(/^#\/rangkuman\/([a-zA-Z0-9-]+)$/);
 
@@ -42,6 +54,96 @@ function routerArtikel() {
       renderArtikel(semuaArtikel[0]);
     }
   }
+}
+
+function jalankanFilterPencarian(kataKunci) {
+  // Filter array data berdasarkan judul atau seluruh poin yang diawali kata "poin"
+  const hasilFilter = semuaArtikel.filter(artikel => {
+    // Cek kecocokan di Judul
+    const cocokJudul = artikel.judul && artikel.judul.toLowerCase().includes(kataKunci);
+    
+    // Cek kecocokan di semua field poin (poin1, poin2, poin3, dst.) secara dinamis
+    const cocokPoin = Object.keys(artikel).some(key => {
+      return /^poin\d+$/.test(key) && 
+             artikel[key] && 
+             artikel[key].toString().toLowerCase().includes(kataKunci);
+    });
+    
+    return cocokJudul || cocokPoin;
+  });
+
+  // 4. LOGIKA PENGATURAN TAMPILAN HASIL FILTER
+  if (hasilFilter.length === 1) {
+    // Jika hanya 1 artikel yang ditemukan, langsung render isi kontennya
+    renderArtikel(hasilFilter[0]);
+  } else if (hasilFilter.length > 1) {
+    // Jika ditemukan banyak artikel, render daftar list-nya ke layar konten utama
+    tampilkanDaftarHasilPencarian(kataKunci, hasilFilter);
+  } else {
+    // Jika tidak ada satu pun artikel atau poin yang cocok
+    renderHalamanTidakDitemukanPencarian(kataKunci);
+  }
+}
+
+function tampilkanDaftarHasilPencarian(keyword, daftarArtikel) {
+  document.getElementById("meta-kategori-penulis").innerHTML = "HASIL PENCARIAN";
+  document.getElementById("judul-artikel").innerText = `Ditemukan ${daftarArtikel.length} Rangkuman untuk "${keyword}"`;
+  
+  // Set gambar default estetik untuk daftar list hasil
+  const imgElement = document.getElementById("gambar-artikel");
+  if (imgElement) {
+    imgElement.src = "https://herza.id/wp-content/uploads/2023/11/Error-404-Solusi-Mudah-untuk-Mengatasi-Masalah-Halaman-Tidak-Ditemukan.jpg"; 
+  }
+
+  const containerPoin = document.getElementById("konten-poin");
+  if (containerPoin) {
+    containerPoin.innerHTML = ""; // Bersihkan list nomor sebelumnya
+    
+    daftarArtikel.forEach(artikel => {
+      const li = document.createElement("li");
+      // Menghilangkan bulatan nomor custom, diganti ke style daftar link bersih
+      li.className = "mb-4 border-b border-slate-100 dark:border-slate-800 pb-3 list-none";
+      
+      li.innerHTML = `
+        <a href="#/rangkuman/${artikel.slug}" class="block group">
+          <div class="text-xs font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1">${artikel.kategori}</div>
+          <h3 class="text-xl font-bold text-slate-800 dark:text-white group-hover:text-amber-500 transition-colors">${artikel.judul}</h3>
+          <p class="text-sm text-slate-500 mt-1">Ditulis oleh ${artikel.penulis}. Klik untuk membaca rangkuman penuh.</p>
+        </a>
+      `;
+      containerPoin.appendChild(li);
+    });
+  }
+
+  // Bersihkan navigasi bawah & audio player karena ini mode list menu eksplorasi
+  sembunyikanKomponenMusikDanNavigasi();
+}
+
+function renderHalamanTidakDitemukanPencarian(keyword) {
+  document.getElementById("meta-kategori-penulis").innerHTML = "PENCARIAN GAGAL";
+  document.getElementById("judul-artikel").innerText = `Kata kunci "${keyword}" tidak ditemukan.`;
+  
+  const imgElement = document.getElementById("gambar-artikel");
+  if (imgElement) imgElement.src = "https://images.unsplash.com/photo-1594322436404-5a0526db4d13?w=1200";
+
+  const containerPoin = document.getElementById("konten-poin");
+  if (containerPoin) {
+    containerPoin.innerHTML = "<li class='text-slate-500 list-none'>Kata kunci tidak cocok dengan judul atau isi poin rangkuman manapun. Silakan coba kata kunci alternatif lainnya.</li>";
+  }
+  sembunyikanKomponenMusikDanNavigasi();
+}
+
+function sembunyikanKomponenMusikDanNavigasi() {
+  const audioEngine = document.getElementById("audio-engine");
+  if (audioEngine) audioEngine.pause();
+  
+  const musicPlayer = document.getElementById("music-player");
+  if (musicPlayer) musicPlayer.classList.add("hidden");
+
+  const elTop = document.getElementById("nav-kategori-top");
+  const elBottom = document.getElementById("nav-kategori-bottom");
+  if (elTop) elTop.innerHTML = "";
+  if (elBottom) elBottom.innerHTML = "";
 }
 
 // 4. FUNGSI RENDER DATA KE ELEMEN HTML BODY
@@ -465,3 +567,15 @@ audio.addEventListener("ended", () => {
   audioSlider.value = 0;
   updateSliderColor(0);
 });
+
+
+function eksekusiPencarian(event) {
+  event.preventDefault();
+  const query = document.getElementById("search-input").value.trim();
+  
+  if (query !== "") {
+    // Ubah hash URL menjadi format pencarian query string (Aman untuk karakter spasi/khusus)
+    window.location.hash = `#/cari?q=${encodeURIComponent(query)}`;
+  }
+}
+
