@@ -90,6 +90,23 @@
         class="fixed inset-y-0 left-0 z-40 w-64 border-r border-slate-200 bg-white pt-4 overflow-y-auto overflow-x-hidden flex-shrink-0 flex flex-col justify-between transition-all duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900"
       >
         <div class="w-64 flex-shrink-0">
+          <div class="px-4 mb-4">
+            <form id="search-form" class="relative flex items-center">
+              <input 
+                type="text" 
+                id="search-input" 
+                placeholder="Cari rangkuman..." 
+                class="w-full rounded-lg border border-slate-200 bg-slate-50 py-1.5 pl-3 pr-10 text-xs font-medium focus:border-amber-500 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:focus:border-amber-400"
+              />
+              <button 
+                type="submit" 
+                class="absolute right-0 top-0 bottom-0 px-3 text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+                title="Cari"
+              >
+                <i class="fa-solid fa-magnifying-glass text-xs"></i>
+              </button>
+            </form>
+          </div>
           <div
             class="px-4 py-2 font-semibold text-xs text-slate-400 uppercase tracking-wider"
           >
